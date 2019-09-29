@@ -1,6 +1,7 @@
 ﻿using AnimalCounter.Context;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace AnimalCounter
@@ -45,6 +46,14 @@ namespace AnimalCounter
                     this.Meetings[id] = this.Meetings[id] + 1;
                 else
                     this.Meetings.Add(id, 1);
+            }
+        }
+
+        public void UpdateGrid(Dictionary<int, Dictionary<int, int>> grid)
+        {
+            foreach(var m in this.Meetings)
+            {
+                grid[this.SpeciesId][m.Key] = grid[this.SpeciesId][m.Key] + m.Value;
             }
         }
 
@@ -186,14 +195,8 @@ namespace AnimalCounter
             }
         }
 
-        public void OccurencesOfSpeciesInStandTogether()
+        public List<SpeciesInteraction> OccurencesOfSpeciesInStandTogether()
         {
-            var path = @"C:\Users\Jeremy\Desktop\patricia\OccurencesOfSpeciesInStandTogether.txt";
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
-            {
-                file.WriteLine("SpeciesId1,SpeciesId2,OccurencesInSameStand");
-            }
-
             var result = new List<SpeciesInteraction>();
 
             foreach (var market in ctx.Markets.ToList())
@@ -229,6 +232,19 @@ namespace AnimalCounter
                 }
             }
 
+            return result;
+        }
+        
+        public void WriteOccurencesOfSpeciesInStandTogether()
+        {
+            var path = @"C:\Users\Jeremy\Desktop\patricia\OccurencesOfSpeciesInStandTogether.txt";
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+            {
+                file.WriteLine("SpeciesId1,SpeciesId2,OccurencesInSameStand");
+            }
+
+            var result = OccurencesOfSpeciesInStandTogether();
+
             var speciesLookup = ctx.Species
                 .Where(s => includedSpeciesIds.Contains(s.ID)).ToDictionary(mc => mc.ID, mc => mc.SpeciesName);
             foreach (var si in result)
@@ -237,6 +253,68 @@ namespace AnimalCounter
             }
 
             Console.WriteLine("done");
+
+        }
+        
+        public void WriteOccurencesOfSpeciesInStandTogetherGrid()
+        {
+            var grid = BuildSpeciesGrid(includedSpeciesIds);
+            var result = OccurencesOfSpeciesInStandTogether();
+
+            foreach (var si in result)
+            {
+                si.UpdateGrid(grid);
+            }
+
+            WriteSpeciesGrid(grid);
+  
+            Console.WriteLine("done");
+        }
+
+
+        public static Dictionary<int, Dictionary<int, int>> BuildSpeciesGrid(List<int> speciesIds)
+        {
+            var result = new Dictionary<int, Dictionary<int, int>>();
+            var orderedIds = speciesIds.OrderBy(x => x);
+
+            foreach(var yId in orderedIds)
+            {
+                var xDictionary = new Dictionary<int, int>();
+                foreach (var id in orderedIds)
+                {
+                    xDictionary.Add(id, 0);
+                }
+                result.Add(yId, xDictionary);
+            }
+
+            return result;
+        }
+
+        public void WriteSpeciesGrid(Dictionary<int, Dictionary<int, int>> grid)
+        {
+            var path = @"C:\Users\Jeremy\Desktop\patricia\OccurencesOfSpeciesInStandTogetherGrid.csv";
+            File.WriteAllText(path, String.Empty);
+
+            var speciesLookup = ctx.Species.Where(s => includedSpeciesIds.Contains(s.ID))
+                .ToDictionary(mc => mc.ID, mc => mc.SpeciesName);
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, true))
+            {
+                // header row
+                var xKeys = grid.First().Value.Keys;
+                var xSpecies = new List<string>();
+                foreach(var key in xKeys)
+                {
+                    xSpecies.Add(speciesLookup[key]);
+                }
+                file.WriteLine("," + string.Format("{0}", string.Join(",", xSpecies)));
+
+                // grid body
+                foreach (var kv in grid)
+                {
+                    file.WriteLine(speciesLookup[kv.Key] + "," + string.Format("{0}", string.Join(",", kv.Value.Values)));
+                }
+            }
 
         }
     }
