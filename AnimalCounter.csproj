@@ -57,9 +57,14 @@
     <Compile Include="Context\MarketSpeciesDateCount.cs" />
     <Compile Include="Context\ObservationDates.cs" />
     <Compile Include="Context\Species.cs" />
+    <Compile Include="CountablePeriod.cs" />
+    <Compile Include="DataModeler.cs" />
+    <Compile Include="DataWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpeciesCount.cs" />
     <Compile Include="SpeciesCounter.cs" />
+    <Compile Include="SpeciesInteraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
