@@ -15,6 +15,7 @@ namespace AnimalCounter.Context
         public virtual DbSet<Markets> Markets { get; set; }
         public virtual DbSet<MarketSpeciesDateCount> MarketSpeciesDateCount { get; set; }
         public virtual DbSet<MarketStandSpeciesDateCount> MarketStandSpeciesDateCount { get; set; }
+        public virtual DbSet<MarketStandCageSpeciesDateCount> MarketStandCageSpeciesDateCount { get; set; }
         public virtual DbSet<ObservationDates> ObservationDates { get; set; }
         public virtual DbSet<Species> Species { get; set; }
 

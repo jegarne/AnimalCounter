@@ -11,7 +11,7 @@ namespace AnimalCounter
         static void Main(string[] args)
         {
             var sc = new SpeciesCounter(new List<int> {1, 4, 7, 8});
-            sc.CountIndividuals();
+            sc.WriteOccurencesOfInvidualSpeciesInCageTogether();
             Console.ReadKey();
         }
     }

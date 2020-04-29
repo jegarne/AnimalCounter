@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Context\AnimalContext.cs" />
     <Compile Include="Context\Markets.cs" />
+    <Compile Include="Context\MarketStandCageSpeciesDateCount.cs" />
     <Compile Include="Context\MarketStandSpeciesDateCount.cs" />
     <Compile Include="Context\MarketSpeciesDateCount.cs" />
     <Compile Include="Context\ObservationDates.cs" />
