@@ -13,12 +13,10 @@ namespace AnimalCounter.Context
         public int ID { get; set; }
 
         public int MarketId { get; set; }
-        public double? StandNumber { get; set; }
-        public double? CageNumber { get; set; }
+        public string StandNumber { get; set; }
+        public string CageNumber { get; set; }
         public int SpeciesId { get; set; }
-
         public DateTime? ObservationDate { get; set; }
-
-        public double? QuantityAnimals { get; set; }
+        public int QuantityAnimals { get; set; }
     }
 }

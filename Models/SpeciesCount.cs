@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnimalCounter
+namespace AnimalCounter.Models
 {
     public class SpeciesCount
     {

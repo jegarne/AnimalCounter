@@ -13,11 +13,16 @@ namespace AnimalCounter.Context
         public int ID { get; set; }
 
         public int MarketId { get; set; }
-        public double? StandNumber { get; set; }
+        public string StandNumber { get; set; }
         public int SpeciesId { get; set; }
 
         public DateTime? ObservationDate { get; set; }
 
-        public double? QuantityAnimals { get; set; }
+        public int QuantityAnimals { get; set; }
+
+        public bool IsNotRealStand()
+        {
+            return this.StandNumber == "999" || !int.TryParse(this.StandNumber, out int parsed);
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace AnimalCounter.Context
         {
         }
 
-        public virtual DbSet<Markets> Markets { get; set; }
+        public virtual DbSet<Market> Markets { get; set; }
         public virtual DbSet<MarketSpeciesDateCount> MarketSpeciesDateCount { get; set; }
         public virtual DbSet<MarketStandSpeciesDateCount> MarketStandSpeciesDateCount { get; set; }
         public virtual DbSet<MarketStandCageSpeciesDateCount> MarketStandCageSpeciesDateCount { get; set; }

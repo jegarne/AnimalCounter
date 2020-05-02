@@ -6,6 +6,7 @@ namespace AnimalCounter.Context
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
+    [Table("Species2")]
     public partial class Species
     {
         [Key]
@@ -14,23 +15,5 @@ namespace AnimalCounter.Context
         [StringLength(255)]
         public string SpeciesName { get; set; }
 
-        public int? AnimalCode { get; set; }
-
-        [StringLength(255)]
-        public string CITES { get; set; }
-
-        [StringLength(255)]
-        public string TaxaGroup { get; set; }
-
-        [StringLength(255)]
-        public string TaxOrder { get; set; }
-
-        [StringLength(255)]
-        public string Family { get; set; }
-
-        [StringLength(255)]
-        public string CommonName { get; set; }
-
-        public double? Rx { get; set; }
     }
 }
