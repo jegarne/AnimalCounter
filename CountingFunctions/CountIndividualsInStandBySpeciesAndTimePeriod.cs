@@ -26,14 +26,6 @@ namespace AnimalCounter.CountingFunctions
 
         public void Calculate()
         {
-            var summaryPath = @"C:\Users\Jeremy\Desktop\patricia\Individuals\IndividualCountsBySpeciesPerDate.csv";
-            File.WriteAllText(summaryPath, String.Empty);
-
-            using (StreamWriter file = new StreamWriter(summaryPath, true))
-            {
-                file.WriteLine("Species,Individuals,Date");
-            }
-
             var speciesSummaryPath = @"C:\Users\Jeremy\Desktop\patricia\Individuals\IndividualCountsBySpeciesPerDate.csv";
             File.WriteAllText(speciesSummaryPath, String.Empty);
             using (StreamWriter file = File.AppendText(speciesSummaryPath))

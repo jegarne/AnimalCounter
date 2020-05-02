@@ -9,7 +9,7 @@ namespace AnimalCounter.Models
     {
         private Dictionary<DateTime, int> countPerDate = new Dictionary<DateTime, int>();
         private int _periodNumber;
-        private int _nonStandCount = 0;
+        private bool _isNotRealStand = false;
 
         public CountablePeriod() { }
         public CountablePeriod(int periodNumber, DateTime startDate, DateTime endDate)
@@ -25,19 +25,14 @@ namespace AnimalCounter.Models
 
         public void AddObservations(List<MarketStandSpeciesDateCount> observations)
         {
+            _isNotRealStand = observations.FirstOrDefault()?.IsNotRealStand() ?? false;
+
             foreach (var ob in observations)
             {
-                if (ob.IsNotRealStand())
-                {
-                    _nonStandCount += ob.QuantityAnimals;
-                    continue;
-                }
-
                 if (countPerDate.ContainsKey(ob.ObservationDate.Value)) continue;
 
                 var total = observations
-                            .Where(x => x.ObservationDate.Value.Date == ob.ObservationDate.Value.Date  
-                            && !x.IsNotRealStand())
+                            .Where(x => x.ObservationDate.Value.Date == ob.ObservationDate.Value.Date)
                             .Sum(x => x.QuantityAnimals);
                 countPerDate.Add(ob.ObservationDate.Value, total);
             }
@@ -45,6 +40,9 @@ namespace AnimalCounter.Models
 
         public int TotalIndividuals()
         {
+            if (_isNotRealStand)
+                return countPerDate.Sum(x => x.Value);
+
             var result = 0;
             var individualsPerObservation = new Dictionary<int, int>();
 
@@ -67,7 +65,7 @@ namespace AnimalCounter.Models
                     result += diff;
             }
 
-            return result + _nonStandCount;
+            return result;
         }
     }
 }

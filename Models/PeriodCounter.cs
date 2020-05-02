@@ -45,7 +45,7 @@ namespace AnimalCounter.Models
 
         private void BuildCountablePeriods()
         {
-            _periods.Add(new CountablePeriod(0, StartDate, StartDate.AddDays(10)));
+            _periods.Add(new CountablePeriod(0, StartDate, StartDate.AddDays(9)));
             CountablePeriod lastPeriod = _periods.First();
             while (lastPeriod.EndDate < EndDate)
             {

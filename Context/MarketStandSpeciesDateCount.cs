@@ -6,9 +6,20 @@ namespace AnimalCounter.Context
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("MarketStandSpeciesDateCount")]
+    [Table("MarketStandSpeciesDateCount2")]
     public partial class MarketStandSpeciesDateCount
     {
+        public MarketStandSpeciesDateCount()
+        {
+        }
+
+        public MarketStandSpeciesDateCount(string standNumber, DateTime? observationDate, int quantityAnimals)
+        {
+            StandNumber = standNumber;
+            ObservationDate = observationDate;
+            QuantityAnimals = quantityAnimals;
+        }
+
         [Key]
         public int ID { get; set; }
 
