@@ -7,7 +7,7 @@ namespace AnimalCounter
     {
         static void Main(string[] args)
         {
-            var sc = new CountIndividualsBySpeciesAndDate();
+            var sc = new CountIndividualsInStandBySpeciesAndTimePeriod();
             sc.Calculate();
             Console.ReadKey();
         }

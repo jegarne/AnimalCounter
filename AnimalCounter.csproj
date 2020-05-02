@@ -62,7 +62,7 @@
     <Compile Include="CountingFunctions\MaxAndMinIndividualsPerMarketPerDay.cs" />
     <Compile Include="CountingFunctions\OccurencesOfSpeciesInStandTogether.cs" />
     <Compile Include="CountingFunctions\CountIndividuals.cs" />
-    <Compile Include="CountingFunctions\CountIndividualsBySpeciesAndDate.cs" />
+    <Compile Include="CountingFunctions\CountIndividualsInStandBySpeciesAndTimePeriod.cs" />
     <Compile Include="CountingFunctions\OccurencesOfSpeciesInCageTogetherByDate.cs" />
     <Compile Include="CountingFunctions\OccurencesOfSpeciesInCageTogether.cs" />
     <Compile Include="CountingFunctions\OccurencesOfSpeciesIndividualsInCageTogetherByDate.cs" />

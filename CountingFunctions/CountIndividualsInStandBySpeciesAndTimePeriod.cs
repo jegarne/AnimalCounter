@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace AnimalCounter.CountingFunctions
 {
-    public class CountIndividualsBySpeciesAndDate
+    public class CountIndividualsInStandBySpeciesAndTimePeriod
     {
         private AnimalContext _ctx;
         private Dictionary<int, string> _speciesLookup;
         private Dictionary<int, string> _marketLookup;
 
-        public CountIndividualsBySpeciesAndDate()
+        public CountIndividualsInStandBySpeciesAndTimePeriod()
         {
             _ctx = new AnimalContext();
 
@@ -29,7 +29,7 @@ namespace AnimalCounter.CountingFunctions
             var summaryPath = @"C:\Users\Jeremy\Desktop\patricia\Individuals\IndividualCountsBySpeciesPerDate.csv";
             File.WriteAllText(summaryPath, String.Empty);
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(summaryPath, true))
+            using (StreamWriter file = new StreamWriter(summaryPath, true))
             {
                 file.WriteLine("Species,Individuals,Date");
             }
@@ -53,13 +53,9 @@ namespace AnimalCounter.CountingFunctions
             foreach (var speciesId in speciesIds)
             {
                 var speciesName = _speciesLookup[speciesId];
-
-                result.Add(speciesId, 0);
                 var records = _ctx.MarketStandSpeciesDateCount.Where(m => m.SpeciesId == speciesId).ToList();
 
-
                 var marketIds = records.Select(r => r.MarketId).Distinct().ToList();
-
                 foreach (var marketId in marketIds)
                 {
                     var marketName = _marketLookup[marketId];
@@ -78,19 +74,7 @@ namespace AnimalCounter.CountingFunctions
                                 && r.StandNumber == standId
                                 && r.MarketId == marketId).ToList();
 
-                            var datesDict = new Dictionary<DateTime, int>();
-
-                            foreach (var date in observedDates)
-                            {
-                                if (datesDict.ContainsKey(date.ObservationDate.Value)) continue;
-
-                                var total = observedDates.Where(x => x.ObservationDate.Value.Date == date.ObservationDate.Value.Date)
-                                            .Sum(x => x.QuantityAnimals);
-                                datesDict.Add(date.ObservationDate.Value, (int)total);
-                            }
-
-                            current.AddObservations(datesDict);
-                            result[speciesId] = result[speciesId] + current.TotalIndividuals();
+                            current.AddObservations(observedDates);
                             counter.NextPeriod();
                             current = counter.GetActivePeriod();
                         }
@@ -111,12 +95,6 @@ namespace AnimalCounter.CountingFunctions
                         }
                     }
                 }
-
-
-                //using (System.IO.StreamWriter file = new System.IO.StreamWriter(summaryPath, true))
-                //{
-                //    file.WriteLine($"{speciesName},{result[speciesId]}");
-                //}
 
                 Console.WriteLine(count + " of " + speciesIds.Count);
                 count++;

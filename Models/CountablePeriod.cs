@@ -7,8 +7,9 @@ namespace AnimalCounter.Models
 {
     public class CountablePeriod
     {
-        private Dictionary<int, MarketStandSpeciesDateCount> _observations = new Dictionary<int, MarketStandSpeciesDateCount>();
+        private Dictionary<DateTime, int> countPerDate = new Dictionary<DateTime, int>();
         private int _periodNumber;
+        private int _nonStandCount = 0;
 
         public CountablePeriod() { }
         public CountablePeriod(int periodNumber, DateTime startDate, DateTime endDate)
@@ -24,42 +25,49 @@ namespace AnimalCounter.Models
 
         public void AddObservations(List<MarketStandSpeciesDateCount> observations)
         {
-            var count = 0;
             foreach (var ob in observations)
             {
-                _observations.Add(count, ob);
-                count++;
+                if (ob.IsNotRealStand())
+                {
+                    _nonStandCount += ob.QuantityAnimals;
+                    continue;
+                }
+
+                if (countPerDate.ContainsKey(ob.ObservationDate.Value)) continue;
+
+                var total = observations
+                            .Where(x => x.ObservationDate.Value.Date == ob.ObservationDate.Value.Date  
+                            && !x.IsNotRealStand())
+                            .Sum(x => x.QuantityAnimals);
+                countPerDate.Add(ob.ObservationDate.Value, total);
             }
         }
 
         public int TotalIndividuals()
         {
             var result = 0;
+            var individualsPerObservation = new Dictionary<int, int>();
 
-            if (_observations.Count == 1)
-                return _observations[0].QuantityAnimals;
+            var count = 0;
+            foreach (var ob in countPerDate.OrderBy(x => x.Key))
+            {
+                individualsPerObservation.Add(count, ob.Value);
+                count++;
+            }
 
-            for (int i = 0; i < _observations.Count-1; i++)
+            for (int i = 0; i < individualsPerObservation.Count - 1; i++)
             {
                 if (i == 0)
                 {
-                    result = _observations[0].QuantityAnimals;
+                    result = individualsPerObservation[0];
                 }
 
-                if (_observations[i].IsNotRealStand())
-                {
-                    result += _observations[i].QuantityAnimals;
-                }
-                else
-                {
-
-                    var diff = _observations[i + 1].QuantityAnimals - _observations[i].QuantityAnimals;
-                    if (diff > 0)
-                        result += diff;
-                }
+                var diff = individualsPerObservation[i + 1] - individualsPerObservation[i];
+                if (diff > 0)
+                    result += diff;
             }
 
-            return result;
-        }        
+            return result + _nonStandCount;
+        }
     }
 }
