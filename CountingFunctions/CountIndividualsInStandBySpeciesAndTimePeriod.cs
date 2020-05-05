@@ -61,8 +61,8 @@ namespace AnimalCounter.CountingFunctions
                         while (current != null)
                         {
                             var observedDates = records
-                                .Where(r => r.ObservationDate >= current.StartDate
-                                && r.ObservationDate <= current.EndDate
+                                .Where(r => r.ObservationDate.Value.Date >= current.StartDate.Date
+                                && r.ObservationDate.Value.Date <= current.EndDate.Date
                                 && r.StandNumber == standId
                                 && r.MarketId == marketId).ToList();
 
@@ -74,6 +74,7 @@ namespace AnimalCounter.CountingFunctions
                         using (StreamWriter file = File.AppendText(speciesSummaryPath))
                         {
                             var counts = counter.GetAllPeriods();
+
                             foreach (var c in counts)
                             {
                                 var total = c.TotalIndividuals();

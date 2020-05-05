@@ -53,6 +53,9 @@ namespace AnimalCounter.Models
                 count++;
             }
 
+            if (individualsPerObservation.Count == 1)
+                return individualsPerObservation[0];
+
             for (int i = 0; i < individualsPerObservation.Count - 1; i++)
             {
                 if (i == 0)
